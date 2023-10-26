@@ -9,17 +9,17 @@ class Solution{
 
     long long maxSubarraySum(int arr[], int n){
        long maxSum=-1;
-        long currSum=0;
+        long currsum=0;
         for(int i=0;i<n;i++){
-            currSum+=arr[i];
-            if(currSum>maxSum){
-                maxSum=currSum;
+            currsum+=arr[i];
+            if(currsum>maxSum){
+                maxSum=currsum;
             }
-            if(currSum<0){
-                currSum=0;
+            if(currsum<0){
+                currsum=0;
             }
         }
-        return maxSum;
+        return    maxSum;
     }
 };
 
