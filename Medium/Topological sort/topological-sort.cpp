@@ -6,31 +6,28 @@ using namespace std;
 
 class Solution
 {
-    private:
-    void dfs(int node, vector<int>&vis, stack<int>&st, vector<int>adj[]){
-        vis[node] = 1;
-        for(auto val : adj[node]){
-            if(!vis[val]){
-                dfs(val, vis, st, adj);
-            }
-        }
-        st.push(node);
-    }
 	public:
-	//Function to return list containing vertices in Topological order. 
 	vector<int> topoSort(int V, vector<int> adj[]) 
 	{
-	    vector<int>vis(V, 0);
-	    stack<int>st;
+	    vector<int>inDegree(V, 0);
 	    for(int i = 0; i<V; i++){
-	        if(!vis[i]){
-	            dfs(i, vis, st, adj);
+	        for(auto val : adj[i]){
+	            inDegree[val]++;
 	        }
 	    }
+	    queue<int>q;
+	    for(int i = 0; i<V; i++){
+	        if(inDegree[i] == 0) q.push(i);
+	    }
 	    vector<int>ans;
-	    while(!st.empty()){
-	        ans.push_back(st.top());
-	        st.pop();
+	    while(!q.empty()){
+	        int node = q.front();
+	        q.pop();
+	        ans.push_back(node);
+	        for(auto val : adj[node]){
+	            inDegree[val]--;
+	            if(inDegree[val] == 0) q.push(val);
+	        }
 	    }
 	    return ans;
 	}
