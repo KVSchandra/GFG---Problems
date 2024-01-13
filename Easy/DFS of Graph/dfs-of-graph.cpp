@@ -4,23 +4,27 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
-  public:
-    //TC: O(N) + O(2E)   SC: O(N)+O(N)+O(N)
-    void dfs(int node, vector<int>&vis, vector<int>adj[], vector<int>&ans) {
-        vis[node] = 1;
-        ans.push_back(node);
-        for(auto it : adj[node]) {
-            if(!vis[it]) {
-                dfs(it, vis, adj, ans);
-            }
-        }
-    }
+  private:
+  void dfs(int i, vector<int>&ans, vector<int>&vis, vector<int>adj[]){
+      vis[i] = 1;
+      ans.push_back(i);
+      for(auto val : adj[i]){
+          if(!vis[val]){
+              dfs(val, ans, vis, adj);
+          }
+      }
+  }
     
+  public:
+    // Function to return a list containing the DFS traversal of the graph.
     vector<int> dfsOfGraph(int V, vector<int> adj[]) {
         vector<int>ans;
-        vector<int>vis (V, 0);
-        int start = 0;
-        dfs(start, vis, adj, ans);
+        vector<int>vis(V, 0);
+        for(int i = 0; i<V; i++){
+            if(!vis[i]){
+                dfs(i, ans, vis, adj);
+            }
+        }
         return ans;
     }
 };
