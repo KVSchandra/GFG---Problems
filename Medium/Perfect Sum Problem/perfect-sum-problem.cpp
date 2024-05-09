@@ -6,22 +6,36 @@ using namespace std;
 
 class Solution{
 
-	public:
-	long long mod = 1e9+7;
-	int solve(long long i, long long sum, long long n, long long k, int arr[], vector<vector<long long>>& dp) {
-        if (i >= n) return (sum == k);
-        if (dp[i][sum] != -1) return dp[i][sum];
-        long long pick = 0;
-        if ((sum + arr[i]) % mod <= k) pick = solve(i + 1, (sum + arr[i]) % mod, n, k, arr, dp);
-        long long notPick = solve(i + 1, sum, n, k, arr, dp);
-        return dp[i][sum] = (pick + notPick) % mod;
+	private:
+	int mod = 1e9+7;
+    int solver(int index,int *arr,int target,vector<vector<int>>&dp)
+    {
+        
+        if(index==-1)
+        {
+            if(target==0)
+            {
+                return 1;
+            }
+            return 0;
+        }
+        if(dp[index][target]!=-1)
+        {
+            return dp[index][target];
+        }
+        int notk=solver(index-1,arr,target,dp);
+        int t=0;
+        if(target>=arr[index])
+        {
+            t=solver(index-1,arr,target-arr[index],dp);
+        }
+        return dp[index][target]=(t+notk)%mod;
     }
-
-	
+	public:
 	int perfectSum(int arr[], int n, int sum)
 	{
-	    vector<vector<long long>>dp(n+2, vector<long long>(sum+1, -1));
-        return solve(0, 0ll, n, sum, arr, dp);
+	    vector<vector<int>>dp(n+1,vector<int>(sum+1,-1));
+        return solver(n-1,arr,sum,dp);
 	}
 	  
 };
