@@ -5,29 +5,34 @@ using namespace std;
 // } Driver Code Ends
 
 class Solution {
-  public:
-    // TC : O(N) + O(2E or DEGREE OF THAT NODE)    SC : O(3N)
-    vector<int> bfsOfGraph(int V, vector<int> adj[]) {
-        vector<int>bfs;
-        int vis[V] = {0};
-        vis[0] = 1;
+  private:
+    void bfs(int i, vector<int>&vis, vector<int>adj[], vector<int>&ans) {
         queue<int>q;
-        q.push(0);
+        q.push(i);
+        ans.push_back(i);
+        vis[i] = 1;
         while(!q.empty()) {
             int node = q.front();
             q.pop();
-            bfs.push_back(node);
-            for(auto val : adj[node]){
+            for(auto val : adj[node]) {
                 if(!vis[val]) {
                     vis[val] = 1;
                     q.push(val);
+                    ans.push_back(val);
                 }
             }
         }
-        return bfs;
+    }
+    
+  public:
+    // Function to return Breadth First Traversal of given graph.
+    vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+        vector<int>vis(V, 0);
+        vector<int>ans;
+        bfs(0, vis, adj, ans);
+        return ans;
     }
 };
-
 
 //{ Driver Code Starts.
 int main() {
