@@ -8,50 +8,45 @@ using namespace std;
 // User function Template for C++
 
 class Solution{
-    private:
-    vector<int> topoSort(int n, vector<int>adj[]){
+    public:
+    string topoSort(vector<int>&inDegree, vector<int>adj[]) {
+        string topo = "";
         queue<int>q;
-        vector<int>inDegree(n, 0);
-        for(int i = 0; i<n; i++){
-            for(auto val : adj[i]){
-                inDegree[val]++;
+        for(int i = 0; i<inDegree.size(); i++) {
+            if(inDegree[i] == 0) {
+                q.push(i);
             }
         }
-        for(int i = 0; i<n; i++){
-            if(inDegree[i] == 0) q.push(i);
-        }
-        vector<int> ans;
-        while(!q.empty()){
+        while(!q.empty()) {
             int node = q.front();
             q.pop();
-            ans.push_back(node);
-            for(auto val : adj[node]){
+            topo.push_back(char(node + 'a'));
+            for(auto val : adj[node]) {
                 inDegree[val]--;
-                if(inDegree[val] == 0) q.push(val);
+                if(inDegree[val] == 0) {
+                    q.push(val);
+                }
             }
         }
-        return ans;
+        return topo;
     }
-    public:
+    
     string findOrder(string dict[], int N, int K) {
         vector<int>adj[K];
-        for(int i = 0; i<N-1; i++){
-            string string1 = dict[i];
-            string string2 = dict[i+1];
-            int len = min(string1.size(), string2.size());
-            for(int j = 0; j<len; j++){
-                if(string1[j] != string2[j]){
-                    adj[string1[j]-'a'].push_back(string2[j]-'a');
+        vector<int>inDegree(K);
+        for(int i = 0; i<N-1; i++) {
+            string s1 = dict[i];
+            string s2 = dict[i+1];
+            for(int j = 0; j<min(s1.size(), s2.size()); j++) {
+                if(s1[j] != s2[j]) {
+                    adj[s1[j]-'a'].push_back(s2[j]-'a');
+                    inDegree[s2[j]-'a']++;
                     break;
                 }
             }
         }
-        vector<int> topo = topoSort(K, adj);
-        string ans = "";
-        for(auto val : topo){
-            ans += char(val + 'a');
-        }
-        return ans;
+        string topo = topoSort(inDegree, adj);
+        return topo;
     }
 };
 
