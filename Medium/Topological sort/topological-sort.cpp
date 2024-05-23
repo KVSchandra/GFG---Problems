@@ -3,33 +3,38 @@
 using namespace std;
 
 // } Driver Code Ends
-
 class Solution
 {
 	public:
-	vector<int> topoSort(int V, vector<int> adj[]) 
-	{
-	    vector<int>inDegree(V, 0);
-	    for(int i = 0; i<V; i++){
-	        for(auto val : adj[i]){
-	            inDegree[val]++;
-	        }
-	    }
+	vector<int>topoSort(vector<int>&inDegree, vector<int>adj[]) {
 	    queue<int>q;
-	    for(int i = 0; i<V; i++){
+	    vector<int>ans;
+	    for(int i = 0; i<inDegree.size(); i++) {
 	        if(inDegree[i] == 0) q.push(i);
 	    }
-	    vector<int>ans;
-	    while(!q.empty()){
+	    while(!q.empty()) {
 	        int node = q.front();
-	        q.pop();
 	        ans.push_back(node);
-	        for(auto val : adj[node]){
+	        q.pop();
+	        for(auto val : adj[node]) {
 	            inDegree[val]--;
 	            if(inDegree[val] == 0) q.push(val);
 	        }
 	    }
 	    return ans;
+	}
+	
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	   vector<int>inDegree(V, 0);
+	   for(int i = 0; i<V; i++) {
+	       for(auto val : adj[i]) {
+	           inDegree[val]++;
+	       }
+	   }
+	   vector<int>topo = topoSort(inDegree, adj);
+	   return topo;
 	}
 };
 
