@@ -6,28 +6,38 @@ using namespace std;
 class Solution {
   public:
     // Function to detect cycle in a directed graph.
-    bool isCyclic(int V, vector<int> adj[]) {
+    vector<int> topoSort(vector<int>&inDegree, vector<int>adj[]) {
+        vector<int>topo;
         queue<int>q;
+        for(int i = 0; i<inDegree.size(); i++) {
+            if(inDegree[i] == 0) {
+                q.push(i);
+            }
+        }
+        while(!q.empty()) {
+            int node = q.front();
+            q.pop();
+            topo.push_back(node);
+            for(auto val : adj[node]) {
+                inDegree[val]--;
+                if(inDegree[val] == 0) {
+                    q.push(val);
+                }
+            }
+        }
+        return topo;
+    }
+    
+    bool isCyclic(int V, vector<int> adj[]) {
         vector<int>inDegree(V, 0);
-        for(int i = 0; i<V; i++){
-            for(auto val : adj[i]){
+        for(int i = 0; i<V; i++) {
+            for(auto val : adj[i]) {
                 inDegree[val]++;
             }
         }
-        for(int i = 0; i<V; i++){
-            if(inDegree[i] == 0) q.push(i);
-        }
-        int count = 0;
-        while(!q.empty()){
-            int node = q.front();
-            q.pop();
-            count++;
-            for(auto val : adj[node]){
-                inDegree[val]--;
-                if(inDegree[val] == 0) q.push(val);
-            }
-        }
-        return !(count == V);
+        vector<int>topo = topoSort(inDegree, adj);
+        // for(auto val : topo) cout << val << " ";
+        return (topo.size() != V);
     }
 };
 
