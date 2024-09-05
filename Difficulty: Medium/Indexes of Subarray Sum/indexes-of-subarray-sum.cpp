@@ -4,15 +4,14 @@ using namespace std;
 
 
 // } Driver Code Ends
-
-#define ll long long
 class Solution {
   public:
     // Function to find a continuous sub-array which adds up to a given number.
     vector<int> subarraySum(vector<int> arr, int n, long long s) {
-        ll i = 0, j = 0;
-        ll sum = 0;
-        while(j < n) {
+        int i = 0, j = 0;
+        int sum = 0;
+        
+        while(j < arr.size()) {
             sum += arr[j];
             if(sum < s) {
                 j++;
@@ -28,7 +27,6 @@ class Solution {
                 j++;
             }
         }
-        
         return {-1};
     }
 };
